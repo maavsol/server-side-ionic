@@ -1,15 +1,29 @@
+require('dotenv').config();
 const express      = require('express');
 const path         = require('path');
 const favicon      = require('serve-favicon');
 const logger       = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
-const mongoose     = require('mongoose');
-
-
-mongoose.connect('mongodb://localhost/pizzapp');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const auth = require('./routes/auth-routes');
 
 const app = express();
+
+require('./config/database');
+
+// const whitelist = ['http://localhost:8100'];
+// const corsOptions = {
+//   origin(origin, callback) {
+//     const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+//     callback(null, originIsWhitelisted);
+//   },
+//   credentials: true,
+// };
+// app.use(cors(corsOptions));
 
 // uncomment after placing your favicon in /public
 //  app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -18,9 +32,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(session({
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, maxAge: 60 * 60 * 24 * 365 },
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+}));
 
-// const index = require('./routes/index');
-// app.use('/', index);
+require('./passport')(app);
+
+app.use('/api/auth', auth);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -30,7 +52,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
