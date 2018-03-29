@@ -10,20 +10,21 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const auth = require('./routes/auth-routes');
+const user = require('./routes/user-routes');
 
 const app = express();
 
 require('./config/database');
 
-// const whitelist = ['http://localhost:8100'];
-// const corsOptions = {
-//   origin(origin, callback) {
-//     const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-//     callback(null, originIsWhitelisted);
-//   },
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
+const whitelist = ['http://localhost:8100'];
+const corsOptions = {
+  origin(origin, callback) {
+    const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+    callback(null, originIsWhitelisted);
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // uncomment after placing your favicon in /public
 //  app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -43,6 +44,7 @@ app.use(session({
 require('./passport')(app);
 
 app.use('/api/auth', auth);
+app.use('/api/user', user);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
