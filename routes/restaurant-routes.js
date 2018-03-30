@@ -41,14 +41,7 @@ router.post('/createRestaurant/:id', (req, res) => {
 });
 
 router.post('/sendOrderedPizzasToCalculatePrice', (req, res, next) => {
-  console.log('la ruta me da esto');
-  console.log(req.body.orderedPizzas);
-
   const myQuantityArray = (function calculateQuantities() {
-    let totalPepperoni;
-    let totalHamAndCheese;
-    let totalfourCheese;
-    let totalBarbacue;
     let hamAndCheeseQ = 0;
     let pepperoniQ = 0;
     let fourCheeseQ = 0;
@@ -88,17 +81,3 @@ router.post('/sendOrderedPizzasToCalculatePrice', (req, res, next) => {
 });
 
 module.exports = router;
-
-//   const restaurants = restaurantsWhichServeMe.map((singleRestaurant) => {
-//     const totalJamonYQueso = singleRestaurant.jamonYQuesoPrice * quantity.jamonYQuesoPrice || 0;
-//     const totalCuatroQuesos = singleRestaurant.cuatroQuesosPrice * quantity.cuatroQuesosPrice || 0;
-//     const totalBarbacoa = singleRestaurant.barbacoaPrice * quantity.barbacoaPrice || 0;
-//     const totalPepperoni = singleRestaurant.peperonniPrice * quantity.peperonniPrice || 0;
-//     const orderTotalPrice = totalJamonYQueso + totalCuatroQuesos + totalBarbacoa + totalPepperoni;
-//     const orderInRestaurant = singleRestaurant;
-//     orderInRestaurant.totalPriceOfOrder = orderTotalPrice;
-//     return orderInRestaurant;
-//   });
-//   res.status(200).json(restaurants);
-// })
-//   .catch(e => res.status(500).json(e));
