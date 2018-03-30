@@ -11,6 +11,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const auth = require('./routes/auth-routes');
 const user = require('./routes/user-routes');
+const address = require('./routes/address-routes');
 
 const app = express();
 
@@ -45,6 +46,7 @@ require('./passport')(app);
 
 app.use('/api/auth', auth);
 app.use('/api/user', user);
+app.use('/api/address', address);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
