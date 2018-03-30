@@ -16,8 +16,6 @@ router.get('/showAllUsers', (req, res) => {
 
 // update user
 router.post('/update/:id', (req, res) => {
-  console.log('al back llego')
-  console.log(req.body)
   let update;
   if (req.body.info.email) {
     const username = req.body.info.email;
@@ -36,22 +34,20 @@ router.post('/update/:id', (req, res) => {
     };
   }
 
-  if (req.body.info) {
-    const telephone = req.body.info;
+  if (req.body.info || req.body.info.telephone) {
+    const telephone = req.body.info.telephone || req.body.info;
     update = {
       telephone,
     };
   }
 
-  console.log('este es mi update')
-  console.log(update)
+  console.log('este es mi update');
+  console.log(update);
 
   User.findByIdAndUpdate(req.params.id, update, {
     new: true,
   })
-    .then(user => {
-      console.log(user)
-      res.status(201).json(user)})
+    .then(user => res.status(201).json(user))
     .catch(e =>
       res.status(500).json({
         error: e.message,
