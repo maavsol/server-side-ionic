@@ -35,14 +35,11 @@ router.post('/update/:id', (req, res) => {
   }
 
   if (req.body.info || req.body.info.telephone) {
-    const telephone = req.body.info.telephone || req.body.info;
+    const telephone = req.body.info.telephone || req.body.info; //  ojo, no podemos cambiar el orden de estos
     update = {
       telephone,
     };
   }
-
-  console.log('este es mi update');
-  console.log(update);
 
   User.findByIdAndUpdate(req.params.id, update, {
     new: true,
