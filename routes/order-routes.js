@@ -68,4 +68,13 @@ router.get('/getAllOrders', (req, res, next) => {
       }));
 });
 
+router.get('/getUserOrdersHistory/:id', (req, res, next) => {
+  Order.find({ user: req.params.id })
+    .then(foundOrders => res.status(200).json(foundOrders))
+    .catch(e =>
+      res.status(500).json({
+        error: e.mesesage,
+      }));
+});
+
 module.exports = router;

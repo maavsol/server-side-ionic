@@ -76,8 +76,6 @@ authRoutes.get('/loggedin', (req, res) => {
 });
 
 authRoutes.post('/sendEmail', (req, res) => {
-  console.log('entro en la ruta');
-  console.log(req.body);
   const { email } = req.body;
   //  generate random 5-letter word
   const randomWord = (function makeid() {
