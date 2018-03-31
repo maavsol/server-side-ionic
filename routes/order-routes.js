@@ -33,4 +33,15 @@ router.post('/createOrder', (req, res, next) => {
       }));
 });
 
+router.get('/getMyOrder/:id', (req, res, next) => {
+  console.log('entro en el back')
+  console.log(req.params.id)
+  Order.findById(req.params.id).populate('addressToServe restaurant user')
+    .then(foundOrder => res.status(200).json(foundOrder))
+    .catch(e =>
+      res.status(500).json({
+        error: e.mesesage,
+      }));
+});
+
 module.exports = router;
