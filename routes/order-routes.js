@@ -34,10 +34,29 @@ router.post('/createOrder', (req, res, next) => {
 });
 
 router.get('/getMyOrder/:id', (req, res, next) => {
-  console.log('entro en el back')
-  console.log(req.params.id)
   Order.findById(req.params.id).populate('addressToServe restaurant user')
     .then(foundOrder => res.status(200).json(foundOrder))
+    .catch(e =>
+      res.status(500).json({
+        error: e.mesesage,
+      }));
+});
+
+router.post('/updateOrderStatus/:id', (req, res, next) => {
+
+  const update = { status: 'accepted' };
+
+  Order.findByIdAndUpdate(req.params.id, update, { new: true }).populate('addressToServe restaurant user')
+    .then(updatedOrder => res.status(200).json(updatedOrder))
+    .catch(e =>
+      res.status(500).json({
+        error: e.mesesage,
+      }));
+});
+
+router.get('/getAllOrders', (req, res, next) => {
+  Order.find().populate('addressToServe restaurant user')
+    .then(allOrders => res.status(200).json(allOrders))
     .catch(e =>
       res.status(500).json({
         error: e.mesesage,
