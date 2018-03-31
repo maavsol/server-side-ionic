@@ -11,6 +11,7 @@ const restaurantSchema = new Schema(
     barbacuePrice: Number,
     hamAndCheesePrice: Number,
     fourCheesePrice: Number,
+    totalPriceOfOrder: { type: Number, default: 0 },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
